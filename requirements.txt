@@ -2,5 +2,8 @@ Pandas
 Numpy
 seaborn
 matplotlib
-sklearn
+scikit-learn
+catboost
+xgboost
+dill
 #-e .
