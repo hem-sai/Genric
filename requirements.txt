@@ -2,4 +2,5 @@ Pandas
 Numpy
 seaborn
 matplotlib
--e .
+sklearn
+#-e .
