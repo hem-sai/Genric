@@ -26,6 +26,15 @@ class DataIngestion:
             logging.info('Read the dataset as dataframe')
             os.makedirs(os.path.dirname(self.ingestion_config.train_data_path),exist_ok=True)
 
+            # os.path.join('artifacts', "train.csv") → creates the string "artifacts/train.csv".
+            # That’s just a path (not creating anything yet).
+
+            # os.path.dirname("artifacts/train.csv") → gives "artifacts".
+            # Basically it strips off "train.csv" and keeps just the folder path.
+
+            # os.makedirs("artifacts", exist_ok=True) → ensures the folder artifacts/ exists.
+            # If it doesn’t, it creates it. If it already exists, nothing happens (because of exist_ok=True).
+            
             df.to_csv(self.ingestion_config.raw_data_path,index=False,header=True)
 
             logging.info("Train test split initiated")
@@ -45,6 +54,7 @@ class DataIngestion:
         except Exception as e:
             raise CustomException(e,sys)
         
+
 if __name__=="__main__":
     obj=DataIngestion()
     train_data, test_data = obj.initiate_data_ingestion()

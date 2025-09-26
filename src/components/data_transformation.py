@@ -74,7 +74,7 @@ class DataTransformation:
             logging.info("Obtaining preprocessing object")
             preprocessing_obj=self.get_data_transformer_object()
             target_column_name="math_score"
-            numerical_columns = ['reading_score', 'writing_score']
+            numerical_columns = ['reading_score', 'writing_score'] #why?
 
             input_feature_train_df = train_df.drop(columns=[target_column_name],axis=1)
             target_feature_train_df=train_df[target_column_name]
@@ -87,6 +87,17 @@ class DataTransformation:
             input_feature_train_arr = preprocessing_obj.fit_transform(input_feature_train_df)
             input_feature_test_arr = preprocessing_obj.transform(input_feature_test_df)
 
+            '''
+            fit = Learn something from the data (e.g., mean & std for scaling, min & max, encoding categories, etc.).
+            transform = Apply that learned information to actually change the data.
+            fit_transform = Does both in one go (first learns, then applies).
+            ⚡ Rule of thumb:
+            On training data → use fit_transform (learn + apply).
+            On test data → use only transform (apply what you learned from train).
+            👉 This prevents data leakage (you don’t want to “peek” at test data when learning scaling parameters,
+              encodings, etc.).
+            '''
+
             train_arr = np.c_[
                 input_feature_train_arr,np.array(target_feature_train_df)
             ]
@@ -94,6 +105,14 @@ class DataTransformation:
             test_arr = np.c_[
                 input_feature_test_arr,np.array(target_feature_test_df)
             ]
+            '''
+            np.c_ is shorthand for column-wise concatenation.
+            It sticks arrays side by side (like pd.concat(..., axis=1) but for NumPy).
+            So here:
+            input_feature_train_arr → preprocessed features (X).
+            np.array(target_feature_train_df) → target values (y).
+            np.c_ merges them into one big NumPy array → train_arr.
+            '''
 
             logging.info("Saved Preprocessing object")
 
